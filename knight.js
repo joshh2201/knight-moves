@@ -53,9 +53,16 @@ const Tree = () => {
     });
     return legalMoves.map((coordinates) => toRankFile(coordinates));
   };
-  const seen = new Set();
-  const buildTree = (position) => {
-    const moves = generateMoves(position);
+  const buildTree = (position, height = 6) => {
+    if (height > 0) {
+      const newMoves = generateMoves(position);
+      newMoves.forEach((value) => {
+        const child = Position(value);
+        position.children.push(child);
+        buildTree(child, height - 1);
+      });
+    }
+    return position;
   };
-  return { generateMoves, toCoordinate, toRankFile };
+  return { generateMoves, toCoordinate, toRankFile, buildTree };
 };
