@@ -1,6 +1,22 @@
-const Position = (data = [0, 0], children = []) => ({ data, children });
+const Position = (data = 'A1', children = []) => ({ data, children });
 
 const Tree = () => {
+  const toCoordinate = (position) => {
+    const rowMap = {
+      A: 0,
+      B: 1,
+      C: 2,
+      D: 3,
+      E: 4,
+      F: 5,
+      G: 6,
+      H: 7,
+    };
+
+    const row = position.data[0];
+    const col = parseInt(position.data[1], 10) - 1;
+    return [rowMap.row, col];
+  };
   const generateMoves = (position) => {
     const row = position.data[0];
     const col = position.data[1];
@@ -24,5 +40,9 @@ const Tree = () => {
     });
     return legalMoves;
   };
-  return { generateMoves };
+  const seen = new Set();
+  const buildTree = (position) => {
+    const moves = generateMoves(position);
+  };
+  return { generateMoves, toCoordinate };
 };
