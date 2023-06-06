@@ -12,10 +12,22 @@ const Tree = () => {
       G: 6,
       H: 7,
     };
-
     const row = position.data[0];
     const col = parseInt(position.data[1], 10) - 1;
     return [rowMap.row, col];
+  };
+  const toRankFile = (coordinate) => {
+    const rowMap = {
+      0: 'A',
+      1: 'B',
+      2: 'C',
+      3: 'D',
+      4: 'E',
+      5: 'F',
+      6: 'G',
+      7: 'H',
+    };
+    return rowMap[coordinate[0]] + (coordinate[1] + 1).toString();
   };
   const generateMoves = (position) => {
     const row = position.data[0];
@@ -44,5 +56,5 @@ const Tree = () => {
   const buildTree = (position) => {
     const moves = generateMoves(position);
   };
-  return { generateMoves, toCoordinate };
+  return { generateMoves, toCoordinate, toRankFile };
 };
