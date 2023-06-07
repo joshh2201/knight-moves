@@ -1,9 +1,20 @@
 /* eslint-disable no-undef */
+const colMap = {
+  0: 'A',
+  1: 'B',
+  2: 'C',
+  3: 'D',
+  4: 'E',
+  5: 'F',
+  6: 'G',
+  7: 'H',
+};
+
 const Position = (data = 'A1', children = [], parent = null) => ({ data, children, parent });
 
 const Tree = () => {
   const toCoordinate = (rankFile) => {
-    const colMap = {
+    const fileMap = {
       A: 0,
       B: 1,
       C: 2,
@@ -15,21 +26,9 @@ const Tree = () => {
     };
     const col = rankFile[0];
     const row = parseInt(rankFile[1], 10) - 1;
-    return [row, colMap[col]];
+    return [row, fileMap[col]];
   };
-  const toRankFile = (coordinate) => {
-    const colMap = {
-      0: 'A',
-      1: 'B',
-      2: 'C',
-      3: 'D',
-      4: 'E',
-      5: 'F',
-      6: 'G',
-      7: 'H',
-    };
-    return colMap[coordinate[1]] + (coordinate[0] + 1).toString();
-  };
+  const toRankFile = (coordinate) => colMap[coordinate[1]] + (coordinate[0] + 1).toString();
   const generateMoves = (position) => {
     const coordinate = toCoordinate(position.data);
     const row = coordinate[0];
@@ -86,31 +85,43 @@ const Tree = () => {
 };
 
 const chessBoard = (() => {
-  const colMap = {
-    0: 'A',
-    1: 'B',
-    2: 'C',
-    3: 'D',
-    4: 'E',
-    5: 'F',
-    6: 'G',
-    7: 'H',
-  };
   const board = document.querySelector('.board');
   let square = null;
-  let squareType = null;
   let position = null;
   // row wise
   for (let j = 8; j > 0; j -= 1) {
     // col wise
     for (let i = 0; i < 8; i += 1) {
       square = document.createElement('div');
-      if (j % 2 === i % 2) squareType = 'unshaded';
-      else squareType = 'shaded';
+      square.setAttribute('class', 'square');
+      if (j % 2 !== i % 2) square.classList.add('shaded');
       position = colMap[i] + j.toString();
-      square.setAttribute('class', squareType);
       square.setAttribute('data-index', position);
       board.appendChild(square);
     }
+  }
+})();
+
+const userSelection = (() => {
+  const startFile = document.querySelector('#start-file');
+  const startRank = document.querySelector('#start-rank');
+  const endFile = document.querySelector('#end-file');
+  const endRank = document.querySelector('#end-rank');
+  for (let i = 0; i < 8; i += 1) {
+    const optionFile = document.createElement('option');
+    optionFile.setAttribute('value', colMap[i]);
+    optionFile.innerText = colMap[i];
+    const cloneFile = optionFile.cloneNode();
+    cloneFile.innerText = colMap[i];
+    startFile.appendChild(optionFile);
+    endFile.appendChild(cloneFile);
+
+    const optionRank = document.createElement('option');
+    optionRank.setAttribute('value', i + 1);
+    optionRank.innerText = i + 1;
+    const cloneRank = optionRank.cloneNode();
+    cloneRank.innerText = i + 1;
+    startRank.appendChild(optionRank);
+    endRank.appendChild(cloneRank);
   }
 })();
