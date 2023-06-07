@@ -1,4 +1,4 @@
-const Position = (data = 'A1', children = []) => ({ data, children });
+const Position = (data = 'A1', children = [], parent = null) => ({ data, children, parent });
 
 const Tree = () => {
   const toCoordinate = (rankFile) => {
@@ -58,6 +58,7 @@ const Tree = () => {
       const newMoves = generateMoves(position);
       newMoves.forEach((value) => {
         const child = Position(value);
+        child.parent = position;
         position.children.push(child);
         buildTree(child, height - 1);
       });
