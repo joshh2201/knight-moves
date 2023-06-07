@@ -2,7 +2,7 @@ const Position = (data = 'A1', children = [], parent = null) => ({ data, childre
 
 const Tree = (start) => {
   const toCoordinate = (rankFile) => {
-    const rowMap = {
+    const colMap = {
       A: 0,
       B: 1,
       C: 2,
@@ -12,12 +12,12 @@ const Tree = (start) => {
       G: 6,
       H: 7,
     };
-    const row = rankFile[0];
-    const col = parseInt(rankFile[1], 10) - 1;
-    return [rowMap[row], col];
+    const col = rankFile[0];
+    const row = parseInt(rankFile[1], 10) - 1;
+    return [row, colMap[col]];
   };
   const toRankFile = (coordinate) => {
-    const rowMap = {
+    const colMap = {
       0: 'A',
       1: 'B',
       2: 'C',
@@ -27,7 +27,7 @@ const Tree = (start) => {
       6: 'G',
       7: 'H',
     };
-    return rowMap[coordinate[0]] + (coordinate[1] + 1).toString();
+    return colMap[coordinate[1]] + (coordinate[0] + 1).toString();
   };
   const generateMoves = (position) => {
     const coordinate = toCoordinate(position.data);
