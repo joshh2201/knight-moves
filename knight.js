@@ -1,6 +1,7 @@
+/* eslint-disable no-undef */
 const Position = (data = 'A1', children = [], parent = null) => ({ data, children, parent });
 
-const Tree = (start) => {
+const Tree = () => {
   const toCoordinate = (rankFile) => {
     const colMap = {
       A: 0,
@@ -65,7 +66,10 @@ const Tree = (start) => {
     }
     return position;
   };
-  let root = buildTree(Position(start));
+  let root = null;
+  const setRoot = (rankFile) => {
+    root = buildTree(Position(rankFile));
+  };
   const find = (rankFile) => {
     if (!root) return null;
     const queue = [];
@@ -78,7 +82,7 @@ const Tree = (start) => {
     }
     return null;
   };
-  return { generateMoves, toCoordinate, toRankFile, buildTree, find, root };
+  return { generateMoves, toCoordinate, toRankFile, buildTree, find, root, setRoot };
 };
 
 const chessBoard = (() => {
