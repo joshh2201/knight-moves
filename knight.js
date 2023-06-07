@@ -1,6 +1,6 @@
 const Position = (data = 'A1', children = [], parent = null) => ({ data, children, parent });
 
-const Tree = () => {
+const Tree = (start) => {
   const toCoordinate = (rankFile) => {
     const rowMap = {
       A: 0,
@@ -65,5 +65,18 @@ const Tree = () => {
     }
     return position;
   };
-  return { generateMoves, toCoordinate, toRankFile, buildTree };
+  let root = buildTree(Position(start));
+  const find = (rankFile) => {
+    if (!root) return null;
+    const queue = [];
+    queue.push(root);
+    let current = null;
+    while (queue.length > 0) {
+      current = queue.shift();
+      if (current.data === rankFile) return current;
+      current.children.forEach((child) => queue.push(child));
+    }
+    return null;
+  };
+  return { generateMoves, toCoordinate, toRankFile, buildTree, find, root };
 };
