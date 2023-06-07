@@ -8,13 +8,13 @@ html {
 }
 
 .header {
-    font-size: 1.75rem;
-    margin: 1rem 0;
+  font-size: 1.75rem;
+  margin: 1rem 0;
 }
 
 .board {
   justify-content: center;
-  margin-top: 1rem;
+  margin: 1rem 0;
   display: grid;
   grid-template-columns: repeat(8, 60px);
   grid-template-rows: repeat(8, 60px);
