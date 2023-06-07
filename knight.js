@@ -80,3 +80,33 @@ const Tree = (start) => {
   };
   return { generateMoves, toCoordinate, toRankFile, buildTree, find, root };
 };
+
+const chessBoard = (() => {
+  const colMap = {
+    0: 'A',
+    1: 'B',
+    2: 'C',
+    3: 'D',
+    4: 'E',
+    5: 'F',
+    6: 'G',
+    7: 'H',
+  };
+  const board = document.querySelector('.board');
+  let square = null;
+  let squareType = null;
+  let position = null;
+  // row wise
+  for (let j = 8; j > 0; j -= 1) {
+    // col wise
+    for (let i = 0; i < 8; i += 1) {
+      square = document.createElement('div');
+      if (j % 2 === i % 2) squareType = 'unshaded';
+      else squareType = 'shaded';
+      position = colMap[i] + j.toString();
+      square.setAttribute('class', squareType);
+      square.setAttribute('data-index', position);
+      board.appendChild(square);
+    }
+  }
+})();
