@@ -12,7 +12,7 @@ const colMap = {
 
 const Position = (data = 'A1', children = [], parent = null) => ({ data, children, parent });
 
-const Tree = () => {
+const Tree = (start = null) => {
   const toCoordinate = (rankFile) => {
     const fileMap = {
       A: 0,
@@ -54,6 +54,7 @@ const Tree = () => {
     return legalMoves.map((coordinates) => toRankFile(coordinates));
   };
   const buildTree = (position, height = 6) => {
+    if (!position.data) return null;
     if (height > 0) {
       const newMoves = generateMoves(position);
       newMoves.forEach((value) => {
@@ -65,10 +66,11 @@ const Tree = () => {
     }
     return position;
   };
-  let root = null;
+  let root = buildTree(Position(start));
   const setRoot = (rankFile) => {
     root = buildTree(Position(rankFile));
   };
+  const getRoot = () => root;
   const find = (rankFile) => {
     if (!root) return null;
     const queue = [];
@@ -81,7 +83,16 @@ const Tree = () => {
     }
     return null;
   };
-  return { generateMoves, toCoordinate, toRankFile, buildTree, find, root, setRoot };
+  const path = (rankFile) => {
+    let current = find(rankFile);
+    const stack = [];
+    while (current) {
+      stack.push(current.data);
+      current = current.parent;
+    }
+    return stack;
+  };
+  return { generateMoves, toCoordinate, toRankFile, buildTree, find, setRoot, getRoot, path };
 };
 
 const chessBoard = (() => {
