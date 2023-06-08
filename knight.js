@@ -140,9 +140,19 @@ const userSelection = (() => {
 
 const displayControl = (() => {
   const form = document.querySelector('.selector-form');
+  const tree = Tree();
+  let currPair = null;
   function submitForm(e) {
     e.preventDefault();
-    console.log(startFile.value);
+    const start = startFile.value + startRank.value;
+    const end = endFile.value + endRank.value;
+    if (!tree.getRoot() || tree.getRoot().data !== start) {
+      tree.setRoot(start);
+    }
+    if (currPair !== start + end) {
+      console.log(tree.path(end));
+      currPair = start + end;
+    }
   }
   form.addEventListener('submit', submitForm);
 })();
