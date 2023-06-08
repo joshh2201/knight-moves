@@ -155,6 +155,8 @@ const domControl = (() => {
     });
   }
   async function traversePath(path) {
+    const submitBtn = document.querySelector('.submit');
+    submitBtn.disabled = true;
     const pathCopy = path.slice();
     while (pathCopy.length > 0) {
       const rankFile = pathCopy.pop();
@@ -165,6 +167,7 @@ const domControl = (() => {
       // eslint-disable-next-line no-await-in-loop
       await wait(2000);
     }
+    submitBtn.disabled = false;
   }
   function submitForm(e) {
     e.preventDefault();
