@@ -138,12 +138,17 @@ const userSelection = (() => {
   }
 })();
 
-const displayControl = (() => {
+const domControl = (() => {
   const form = document.querySelector('.selector-form');
   const tree = Tree();
+  let currPair = null;
+  const display = document.querySelector('.display');
   const test = document.createElement('div');
   test.innerText = 'Hello';
-  let currPair = null;
+  function updateDisplay(rankFile) {
+    if (!display.innerText) display.innerText = `Shortest Path: ${rankFile}`;
+    else display.innerText += ` -> ${rankFile}`;
+  }
   function wait(ms) {
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(ms), ms);
@@ -152,9 +157,11 @@ const displayControl = (() => {
   async function traversePath(path) {
     const pathCopy = path.slice();
     while (pathCopy.length > 0) {
-      const query = `[data-index=${pathCopy.pop()}]`;
+      const rankFile = pathCopy.pop();
+      const query = `[data-index=${rankFile}]`;
       const target = document.querySelector(query);
       target.appendChild(test);
+      updateDisplay(rankFile);
       // eslint-disable-next-line no-await-in-loop
       await wait(2000);
     }
@@ -167,6 +174,7 @@ const displayControl = (() => {
       tree.setRoot(start);
     }
     if (currPair !== start + end) {
+      display.innerText = '';
       traversePath(tree.path(end));
       currPair = start + end;
     }
