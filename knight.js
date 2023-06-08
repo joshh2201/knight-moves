@@ -10,6 +10,11 @@ const colMap = {
   7: 'H',
 };
 
+const startFile = document.querySelector('#start-file');
+const startRank = document.querySelector('#start-rank');
+const endFile = document.querySelector('#end-file');
+const endRank = document.querySelector('#end-rank');
+
 const Position = (data = 'A1', children = [], parent = null) => ({ data, children, parent });
 
 const Tree = (start = null) => {
@@ -114,10 +119,6 @@ const chessBoard = (() => {
 })();
 
 const userSelection = (() => {
-  const startFile = document.querySelector('#start-file');
-  const startRank = document.querySelector('#start-rank');
-  const endFile = document.querySelector('#end-file');
-  const endRank = document.querySelector('#end-rank');
   for (let i = 0; i < 8; i += 1) {
     const optionFile = document.createElement('option');
     optionFile.setAttribute('value', colMap[i]);
@@ -135,4 +136,13 @@ const userSelection = (() => {
     startRank.appendChild(optionRank);
     endRank.appendChild(cloneRank);
   }
+})();
+
+const displayControl = (() => {
+  const form = document.querySelector('.selector-form');
+  function submitForm(e) {
+    e.preventDefault();
+    console.log(startFile.value);
+  }
+  form.addEventListener('submit', submitForm);
 })();
