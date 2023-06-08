@@ -141,7 +141,24 @@ const userSelection = (() => {
 const displayControl = (() => {
   const form = document.querySelector('.selector-form');
   const tree = Tree();
+  const test = document.createElement('div');
+  test.innerText = 'Hello';
   let currPair = null;
+  function wait(ms) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(ms), ms);
+    });
+  }
+  async function traversePath(path) {
+    const pathCopy = path.slice();
+    while (pathCopy.length > 0) {
+      const query = `[data-index=${pathCopy.pop()}]`;
+      const target = document.querySelector(query);
+      target.appendChild(test);
+      // eslint-disable-next-line no-await-in-loop
+      await wait(2000);
+    }
+  }
   function submitForm(e) {
     e.preventDefault();
     const start = startFile.value + startRank.value;
@@ -150,7 +167,7 @@ const displayControl = (() => {
       tree.setRoot(start);
     }
     if (currPair !== start + end) {
-      console.log(tree.path(end));
+      traversePath(tree.path(end));
       currPair = start + end;
     }
   }
