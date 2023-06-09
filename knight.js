@@ -143,8 +143,10 @@ const domControl = (() => {
   const tree = Tree();
   let currPair = null;
   const display = document.querySelector('.display');
-  const test = document.createElement('div');
-  test.innerText = 'Hello';
+  const knight = document.createElement('img');
+  knight.setAttribute('src', 'images/knight.png');
+  knight.setAttribute('class', 'knight');
+  console.log(knight);
   function updateDisplay(rankFile) {
     if (!display.innerText) display.innerText = `Shortest Path: ${rankFile}`;
     else display.innerText += ` -> ${rankFile}`;
@@ -162,7 +164,7 @@ const domControl = (() => {
       const rankFile = pathCopy.pop();
       const query = `[data-index=${rankFile}]`;
       const target = document.querySelector(query);
-      target.appendChild(test);
+      target.appendChild(knight);
       updateDisplay(rankFile);
       // eslint-disable-next-line no-await-in-loop
       await wait(2000);
