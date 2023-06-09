@@ -1,6 +1,6 @@
 # Knight's Shortest Path Finder
 
-Hey there! Welcome to the Knight Moves project. This little web application is built with JavaScript, HTML, and CSS. It's a fun project that computes and displays the shortest path between two squares on a chessboard using a knight's movements.
+Hey there! Welcome to the Knight Moves project. This simple web application is built with JavaScript, HTML, and CSS. It's a fun project that computes and displays the shortest path between two squares on a chessboard using a knight's movements.
 
 ## How It Works
 
