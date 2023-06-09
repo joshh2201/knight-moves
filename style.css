@@ -33,3 +33,7 @@ html {
   display: flex;
   gap: 2rem;
 }
+
+.knight {
+  height: 100%;
+}
