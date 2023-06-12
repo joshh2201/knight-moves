@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Knight Moves</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.js" defer></script>
+  </head>
+  <body>
+    <div class="header">Knight Moves</div>
+    <div class="selector">
+      <form action="submit" class="selector-form">
+        <div class="start">
+          Starting Square:
+          <select name="start-file" id="start-file"></select>
+          <select name="start-rank" id="start-rank"></select>
+        </div>
+        <div class="end">
+          Ending Square:
+          <select name="end-file" id="end-file"></select>
+          <select name="end-rank" id="end-rank"></select>
+        </div>
+        <button class="submit" type="submit">Calculate</button>
+      </form>
+    </div>
+    <div class="chessboard">
+        <div class="rank"></div>
+        <div class="board"></div>
+        <div class="file"></div>
+    </div>
+    <div class="display"></div>
+  </body>
+</html>
