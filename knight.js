@@ -19,6 +19,8 @@ const Position = (data = 'A1', children = [], parent = null) => ({ data, childre
 
 const Tree = (start = null) => {
   const toCoordinate = (rankFile) => {
+    // map rank file to 2D zero-indexed coordinate array
+    // rank -> row, file -> col i.e 'C2' -> [1,2]
     const fileMap = {
       A: 0,
       B: 1,
@@ -33,12 +35,14 @@ const Tree = (start = null) => {
     const row = parseInt(rankFile[1], 10) - 1;
     return [row, fileMap[col]];
   };
+  // maps 2D coordinate array to rank file notation, see toCoordinate
   const toRankFile = (coordinate) => colMap[coordinate[1]] + (coordinate[0] + 1).toString();
   const generateMoves = (position) => {
     const coordinate = toCoordinate(position.data);
     const row = coordinate[0];
     const col = coordinate[1];
     const legalMoves = [];
+    // knightMoves is an array of all eight possible moves for a knight
     const knightMoves = [
       [-2, -1],
       [-2, 1],
@@ -52,15 +56,19 @@ const Tree = (start = null) => {
     knightMoves.forEach((move) => {
       const nextRow = row + move[0];
       const nextCol = col + move[1];
+      // check if the move is within the 8x8 chess board
       if (nextRow >= 0 && nextRow <= 7 && nextCol >= 0 && nextCol <= 7) {
         legalMoves.push([nextRow, nextCol]);
       }
     });
+    // convert legal moves from coordinates back to rank file
     return legalMoves.map((coordinates) => toRankFile(coordinates));
   };
   const buildTree = (position, height = 6) => {
+    // at a tree height of 6, all 64 squares are in the tree
     if (!position.data) return null;
     if (height > 0) {
+      // set the legal moves for a given square as its children
       const newMoves = generateMoves(position);
       newMoves.forEach((value) => {
         const child = Position(value);
@@ -69,6 +77,7 @@ const Tree = (start = null) => {
         buildTree(child, height - 1);
       });
     }
+    // return the root of the tree
     return position;
   };
   let root = buildTree(Position(start));
@@ -77,6 +86,7 @@ const Tree = (start = null) => {
   };
   const getRoot = () => root;
   const find = (rankFile) => {
+    // use bfs to return the node with the input rank file
     if (!root) return null;
     const queue = [];
     queue.push(root);
@@ -91,6 +101,8 @@ const Tree = (start = null) => {
   const path = (rankFile) => {
     let current = find(rankFile);
     const stack = [];
+    // traverse the tree from the found node to the root
+    // and append each node to a stack
     while (current) {
       stack.push(current.data);
       current = current.parent;
@@ -102,16 +114,25 @@ const Tree = (start = null) => {
 
 const chessBoard = (() => {
   const board = document.querySelector('.board');
-  let square = null;
-  let position = null;
+  const file = document.querySelector('.file');
+  const rank = document.querySelector('.rank');
   // row wise
   for (let j = 8; j > 0; j -= 1) {
+    const newRank = document.createElement('div');
+    newRank.innerText = j;
+    newRank.setAttribute('class', 'rankfile');
+    rank.appendChild(newRank);
+
+    const newFile = document.createElement('div');
+    newFile.innerText = colMap[j - 1];
+    newFile.setAttribute('class', 'rankfile');
+    file.insertBefore(newFile, file.firstChild);
     // col wise
     for (let i = 0; i < 8; i += 1) {
-      square = document.createElement('div');
+      const square = document.createElement('div');
       square.setAttribute('class', 'square');
       if (j % 2 !== i % 2) square.classList.add('shaded');
-      position = colMap[i] + j.toString();
+      const position = colMap[i] + j.toString();
       square.setAttribute('data-index', position);
       board.appendChild(square);
     }
@@ -146,7 +167,6 @@ const domControl = (() => {
   const knight = document.createElement('img');
   knight.setAttribute('src', 'images/knight.png');
   knight.setAttribute('class', 'knight');
-  console.log(knight);
   function updateDisplay(rankFile) {
     if (!display.innerText) display.innerText = `Shortest Path: ${rankFile}`;
     else display.innerText += ` -> ${rankFile}`;
