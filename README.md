@@ -13,7 +13,7 @@ The knight can move in an "L" shape, two squares in one direction and one square
 This project primarily focuses on implementing various data structures and search algorithms to find the shortest path. The following concepts were utilized:
 
 - Search Trees: I used a search tree structure to represent the exploration of different paths taken by the knight on the chessboard.
-- Breadth First Search (BFS): The breadth first search algorithm was employed to explore the chessboard in a systematic manner, ensuring that all possible moves were considered.
+- Breadth First Search (BFS): The breadth first search algorithm was employed to find the shortest path between the starting square and the ending square.
 - Stacks and Queues: Stacks and queues were used as auxiliary data structures to keep track of the current state of the search process.
 
 ## Getting Started
