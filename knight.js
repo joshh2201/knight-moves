@@ -10,6 +10,7 @@ const colMap = {
   7: 'H',
 };
 
+// dropdown inputs in the form
 const startFile = document.querySelector('#start-file');
 const startRank = document.querySelector('#start-rank');
 const endFile = document.querySelector('#end-file');
@@ -109,15 +110,16 @@ const Tree = (start = null) => {
     }
     return stack;
   };
-  return { generateMoves, toCoordinate, toRankFile, buildTree, find, setRoot, getRoot, path };
+  return { setRoot, getRoot, path };
 };
 
 const chessBoard = (() => {
   const board = document.querySelector('.board');
   const file = document.querySelector('.file');
   const rank = document.querySelector('.rank');
-  // row wise
+  // row wise iteration
   for (let j = 8; j > 0; j -= 1) {
+    // fill in rank and file divs with correct labels
     const newRank = document.createElement('div');
     newRank.innerText = j;
     newRank.setAttribute('class', 'rankfile');
@@ -127,12 +129,14 @@ const chessBoard = (() => {
     newFile.innerText = colMap[j - 1];
     newFile.setAttribute('class', 'rankfile');
     file.insertBefore(newFile, file.firstChild);
-    // col wise
+    // col wise iteration
     for (let i = 0; i < 8; i += 1) {
       const square = document.createElement('div');
       square.setAttribute('class', 'square');
+      // add shaded class to every other square
       if (j % 2 !== i % 2) square.classList.add('shaded');
       const position = colMap[i] + j.toString();
+      // use data attribute to indicate rank and file
       square.setAttribute('data-index', position);
       board.appendChild(square);
     }
@@ -140,6 +144,7 @@ const chessBoard = (() => {
 })();
 
 const userSelection = (() => {
+  // add rank and file options to dropdown menus
   for (let i = 0; i < 8; i += 1) {
     const optionFile = document.createElement('option');
     optionFile.setAttribute('value', colMap[i]);
@@ -163,45 +168,52 @@ const domControl = (() => {
   const form = document.querySelector('.selector-form');
   const tree = Tree();
   let currPair = null;
+  // initialize knight icon
   const display = document.querySelector('.display');
   const knight = document.createElement('img');
   knight.setAttribute('src', 'images/knight.png');
   knight.setAttribute('class', 'knight');
   function updateDisplay(rankFile) {
+    // update display div with current node in the path
     if (!display.innerText) display.innerText = `Shortest Path: ${rankFile}`;
     else display.innerText += ` -> ${rankFile}`;
   }
   function wait(ms) {
+    // delay code by a given number of milliseconds
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(ms), ms);
     });
   }
   async function traversePath(path) {
+    // async function to pause between every square traversal
     const submitBtn = document.querySelector('.submit');
-    submitBtn.disabled = true;
+    submitBtn.disabled = true; // stop users from changing the start and end while traversePath is running
     const pathCopy = path.slice();
     while (pathCopy.length > 0) {
       const rankFile = pathCopy.pop();
       const query = `[data-index=${rankFile}]`;
       const target = document.querySelector(query);
-      target.appendChild(knight);
+      target.appendChild(knight); // move the knight icon to next square in the path
       updateDisplay(rankFile);
       // eslint-disable-next-line no-await-in-loop
       await wait(2000);
     }
-    submitBtn.disabled = false;
+    submitBtn.disabled = false; // re-enable submit button
   }
   function submitForm(e) {
-    e.preventDefault();
+    e.preventDefault(); // prevent the form from redirecting
+    // concatenate values from dropdown menus
     const start = startFile.value + startRank.value;
     const end = endFile.value + endRank.value;
     if (!tree.getRoot() || tree.getRoot().data !== start) {
+      // re-build the tree for a null root or when start changes
       tree.setRoot(start);
     }
     if (currPair !== start + end) {
+      // calculate path traversal when start or end changes
       display.innerText = '';
       traversePath(tree.path(end));
-      currPair = start + end;
+      currPair = start + end; // update the current start and end pair
     }
   }
   form.addEventListener('submit', submitForm);
